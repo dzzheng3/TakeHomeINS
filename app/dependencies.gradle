@@ -16,6 +16,7 @@ ext {
             assertj       : '1.1.1',
             rxKotlin      : '2.1.0',
             rxAndroid     : '2.0.1',
+            rxBinding     : '2.1.1',
             mockito       : '2.8.9',
             junit         : '4.12',
             sqlbrite      : '1.1.2',
@@ -40,6 +41,7 @@ ext {
 
     rxJava = [
             rxKotlin : "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlin",
+            rxBinding : "com.jakewharton.rxbinding2:rxbinding:$versions.rxBinding",
             rxAndroid: "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
     ]
 
@@ -52,7 +54,7 @@ ext {
 
     okHttp = [
             logger: "com.squareup.okhttp3:logging-interceptor:$versions.okHttp",
-            okhttp  : "com.squareup.okhttp3:okhttp:$versions.okHttp"
+            okhttp: "com.squareup.okhttp3:okhttp:$versions.okHttp"
     ]
 
     googlePlay = [
@@ -63,15 +65,15 @@ ext {
     ]
 
     unitTest = [
-            harcrestCore        : "org.hamcrest:hamcrest-core:$versions.hamcrest",
-            harmcrestLib        : "org.hamcrest:hamcrest-library:$versions.hamcrest",
-            hamcrestIntegration : "org.hamcrest:hamcrest-integration:$versions.hamcrest",
-            robolectric         : "org.robolectric:robolectric:$versions.robolectric",
-            supportAnnotation   : "com.android.support:support-annotations:$versions.support",
-            restMock            : "com.github.andrzejchm.RESTMock:android:$versions.restMock",
-            assertj             : "com.squareup.assertj:assertj-android:$versions.assertj",
-            kotlinTest          : "org.jetbrains.kotlin:kotlin-test:$kotlin_version",
-            kotlinJunit         : "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+            harcrestCore       : "org.hamcrest:hamcrest-core:$versions.hamcrest",
+            harmcrestLib       : "org.hamcrest:hamcrest-library:$versions.hamcrest",
+            hamcrestIntegration: "org.hamcrest:hamcrest-integration:$versions.hamcrest",
+            robolectric        : "org.robolectric:robolectric:$versions.robolectric",
+            supportAnnotation  : "com.android.support:support-annotations:$versions.support",
+            restMock           : "com.github.andrzejchm.RESTMock:android:$versions.restMock",
+            assertj            : "com.squareup.assertj:assertj-android:$versions.assertj",
+            kotlinTest         : "org.jetbrains.kotlin:kotlin-test:$kotlin_version",
+            kotlinJunit        : "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     ] + junit + mockito + restMock
 
