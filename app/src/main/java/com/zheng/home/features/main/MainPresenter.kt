@@ -1,6 +1,7 @@
 package com.zheng.home.features.main
 
 import com.zheng.home.data.DataManager
+import com.zheng.home.data.model.Quiz
 import com.zheng.home.injection.ConfigPersistent
 import com.zheng.home.features.base.BasePresenter
 import com.zheng.home.util.rx.scheduler.SchedulerUtils
@@ -28,4 +29,13 @@ constructor(private val mDataManager: DataManager) : BasePresenter<MainMvpView>(
                 }
     }
 
+    fun getQuize() {
+        mDataManager.response
+                .compose<String>(SchedulerUtils.ioToMain<String>())
+                .subscribe({ json ->
+                    var quiz:Quiz = mDataManager.getRandomQuiz(mDataManager.getQuizList(json))
+                    var currentAnswer:Int = mDataManager.getQuizAnswer(quiz)
+
+                })
+    }
 }

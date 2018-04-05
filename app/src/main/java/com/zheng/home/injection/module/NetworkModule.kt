@@ -18,6 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -30,7 +31,21 @@ class NetworkModule(private val context: Context) {
 
     @Provides
     @Singleton
-    internal fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    @Named("pokemon")
+    internal fun providePokemonRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+        return Retrofit.Builder()
+                .baseUrl(BuildConfig.POKEAPI_API_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+
+    }
+
+    @Provides
+    @Singleton
+    @Named("quiz")
+    internal fun provideQuizRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(BuildConfig.POKEAPI_API_URL)
                 .client(okHttpClient)

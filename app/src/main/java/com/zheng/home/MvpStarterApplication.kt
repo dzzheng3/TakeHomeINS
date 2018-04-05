@@ -32,7 +32,6 @@ class MvpStarterApplication : MultiDexApplication() {
     var component: AppComponent
         get() {
             if (mAppComponent == null) {
-//                mAppComponent = DaggerAppComponent.builder()
                 mAppComponent = DaggerAppComponent.builder()
                         .appModule(AppModule(this))
                         .networkModule(NetworkModule(this))
