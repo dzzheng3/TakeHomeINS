@@ -156,5 +156,6 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
                     finish()
                 })
         dialog?.show()
+        isShowing = true
     }
 }
