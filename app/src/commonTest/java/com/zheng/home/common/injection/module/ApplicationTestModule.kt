@@ -5,7 +5,6 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import com.zheng.home.data.DataManager
-import com.zheng.home.data.remote.PokemonApi
 import com.zheng.home.injection.ApplicationContext
 import org.mockito.Mockito.mock
 import javax.inject.Singleton

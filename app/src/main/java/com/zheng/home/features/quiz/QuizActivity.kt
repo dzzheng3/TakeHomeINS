@@ -18,7 +18,7 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
     companion object {
         private var QUIZ: String = "quiz"
         private var USERCLICK_POSITION: String = "userClickPosition"
-        private var DIALOG_SHOW: String = "dialog is showing"
+        private var DIALOG_SHOW: String = "dialogBuilder is showing"
     }
 
     @Inject
@@ -26,7 +26,7 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
     @Inject
     lateinit var quizAdapter: QuizAdapter
     private var quizPair: Pair<Int, Quiz>? = null
-    private var dialog: AlertDialog.Builder? = null
+    private var dialogBuilder: AlertDialog.Builder? = null
     private var alertDialog: AlertDialog? = null
     private var userClickPosition: Int = -2
     private var isShowing: Boolean = false
@@ -43,9 +43,9 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
         rv_quiz.layoutManager = GridLayoutManager(this, 2)
         rv_quiz.adapter = quizAdapter
         view_error.setErrorListener(this)
-        dialog = AlertDialog.Builder(this)
-        dialog?.setCancelable(false)
-        dialog?.setOnDismissListener(this)
+        dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder?.setCancelable(false)
+        dialogBuilder?.setOnDismissListener(this)
         if (savedInstanceState != null) {
             val answer = savedInstanceState.getInt(QUIZ)
             val quiz = savedInstanceState.getParcelable<Quiz>(QUIZ)
@@ -104,31 +104,31 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
     override fun clickItem(answer: Int) {
         userClickPosition = answer
         if (answer == quizPair?.first) {
-            dialog?.setMessage("Congratulations! You have selected correct answer! Would you like to try again?")
-            dialog?.setPositiveButton("Yes",
+            dialogBuilder?.setMessage("Congratulations! You have selected correct answer! Would you like to try again?")
+            dialogBuilder?.setPositiveButton("Yes",
                     { dialog, _ ->
                         quizPresenter.getQuize()
                         dialog.dismiss()
                     })
-            dialog?.setNegativeButton("No",
+            dialogBuilder?.setNegativeButton("No",
                     { dialog, _ ->
                         dialog.dismiss()
                         finish()
                     })
         } else {
-            dialog?.setMessage("Nope. You are wrong! Would you like to try again?")
-            dialog?.setPositiveButton("Yes",
+            dialogBuilder?.setMessage("Nope. You are wrong! Would you like to try again?")
+            dialogBuilder?.setPositiveButton("Yes",
                     { dialog, _ ->
                         dialog.dismiss()
                     })
-            dialog?.setNegativeButton("No",
+            dialogBuilder?.setNegativeButton("No",
                     { dialog, _ ->
                         dialog.dismiss()
                         finish()
                     })
         }
         isShowing = true
-        alertDialog = dialog?.show()
+        alertDialog = dialogBuilder?.show()
     }
 
     override fun onDismiss(p0: DialogInterface?) {
@@ -144,18 +144,25 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
         if (isShowing && alertDialog != null) {
             alertDialog?.dismiss()
         }
-        dialog?.setMessage("OOPs! Time out. Would you want to try another one?")
-        dialog?.setPositiveButton("Yes",
+        dialogBuilder?.setMessage("OOPs! Time out. Would you want to try another one?")
+        dialogBuilder?.setPositiveButton("Yes",
                 { dialog, _ ->
                     quizPresenter.getQuize()
                     dialog.dismiss()
                 })
-        dialog?.setNegativeButton("No",
+        dialogBuilder?.setNegativeButton("No",
                 { dialog, _ ->
                     dialog.dismiss()
                     finish()
                 })
-        dialog?.show()
+        dialogBuilder?.show()
         isShowing = true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isShowing && dialogBuilder != null) {
+            dialogBuilder = null
+        }
     }
 }

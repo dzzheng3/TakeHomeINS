@@ -1,17 +1,17 @@
 package com.zheng.home
 
-import com.zheng.home.common.TestDataFactory
 import com.zheng.home.data.DataManager
-import com.zheng.home.features.main.MainMvpView
-import com.zheng.home.features.main.MainPresenter
+import com.zheng.home.data.model.Quiz
+import com.zheng.home.features.quiz.QuizMvpView
+import com.zheng.home.features.quiz.QuizPresenter
 import com.zheng.home.util.RxSchedulersOverrideRule
+import com.zheng.home.util.TestUtils
 import io.reactivex.Single
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -20,9 +20,11 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class MainPresenterTest {
 
-    @Mock lateinit var mMockMainMvpView: MainMvpView
-    @Mock lateinit var mMockDataManager: DataManager
-    private var mMainPresenter: MainPresenter? = null
+    @Mock
+    lateinit var quizMvpView: QuizMvpView
+    @Mock
+    lateinit var mMockDataManager: DataManager
+    private var quizPresenter: QuizPresenter? = null
 
     @JvmField
     @Rule
@@ -30,41 +32,45 @@ class MainPresenterTest {
 
     @Before
     fun setUp() {
-        mMainPresenter = MainPresenter(mMockDataManager)
-        mMainPresenter?.attachView(mMockMainMvpView)
+        quizPresenter = QuizPresenter(mMockDataManager)
+        quizPresenter?.attachView(quizMvpView)
     }
 
     @After
     fun tearDown() {
-        mMainPresenter?.detachView()
+        quizPresenter?.detachView()
     }
 
     @Test
     @Throws(Exception::class)
     fun getPokemonReturnsPokemonNames() {
-        val pokemonList = TestDataFactory.makePokemonNamesList(10)
-        `when`(mMockDataManager.getPokemonList(10))
-                .thenReturn(Single.just(pokemonList))
+        val testUtils = TestUtils()
+        val loadJson = testUtils.loadJson("mock/quiz.json")
+        `when`(mMockDataManager.response)
+                .thenReturn(Single.just(loadJson))
 
-        mMainPresenter?.getPokemon(10)
+        quizPresenter?.getQuize()
 
-        verify<MainMvpView>(mMockMainMvpView, times(2)).showProgress(anyBoolean())
-        verify<MainMvpView>(mMockMainMvpView).showPokemon(pokemonList)
-        verify<MainMvpView>(mMockMainMvpView, never()).showError(RuntimeException())
+        verify<QuizMvpView>(quizMvpView, times(2)).showProgress(anyBoolean())
+        verify<QuizMvpView>(quizMvpView).showQuiz(Quiz("", listOf()), 1)
+        verify<QuizMvpView>(quizMvpView, never()).showError(RuntimeException())
 
     }
+
+    @Mock
+    lateinit var quiz: Quiz
 
     @Test
     @Throws(Exception::class)
     fun getPokemonReturnsError() {
-        `when`(mMockDataManager.getPokemonList(10))
-                .thenReturn(Single.error<List<String>>(RuntimeException()))
+        `when`(mMockDataManager.response)
+                .thenReturn(Single.error<String>(RuntimeException()))
 
-        mMainPresenter?.getPokemon(10)
+        quizPresenter?.getQuize()
 
-        verify<MainMvpView>(mMockMainMvpView, times(2)).showProgress(anyBoolean())
-//        verify<MainMvpView>(mMockMainMvpView).showError(RuntimeException())
-        verify<MainMvpView>(mMockMainMvpView, never()).showPokemon(ArgumentMatchers.anyList<String>())
+        verify<QuizMvpView>(quizMvpView, times(2)).showProgress(anyBoolean())
+//        verify<MainMvpView>(quizMvpView).showError(RuntimeException())
+        verify<QuizMvpView>(quizMvpView, never()).showQuiz(quiz, 1)
     }
 
 }

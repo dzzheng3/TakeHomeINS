@@ -4,9 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.zheng.home.data.model.Pokemon;
 import com.zheng.home.data.model.Quiz;
-import com.zheng.home.data.remote.PokemonApi;
 import com.zheng.home.data.remote.QuizApi;
 
 import java.util.ArrayList;
@@ -23,26 +21,11 @@ import io.reactivex.Single;
 
 @Singleton
 public class DataManager {
-    private PokemonApi pokemonService;
     private QuizApi quizApi;
 
     @Inject
-    public DataManager(PokemonApi pokemonService, QuizApi quizApi) {
-        this.pokemonService = pokemonService;
+    public DataManager(QuizApi quizApi) {
         this.quizApi = quizApi;
-    }
-
-    public Single<List<String>> getPokemonList(int limit) {
-        return pokemonService
-                .getPokemonList(limit)
-                .toObservable()
-                .flatMapIterable(namedResources -> namedResources.getResults())
-                .map(namedResource -> namedResource.getName())
-                .toList();
-    }
-
-    public Single<Pokemon> getPokemon(String name) {
-        return pokemonService.getPokemon(name);
     }
 
     public Single<String> getResponse() {

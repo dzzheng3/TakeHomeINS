@@ -16,7 +16,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import timber.log.Timber
 import javax.inject.Named
@@ -29,19 +28,6 @@ class NetworkModule(private val context: Context) {
     var cacheSize: Long = 10 * 1024 * 1024 // 10 MB
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     var cache = Cache(context.codeCacheDir, cacheSize)
-
-    @Provides
-    @Singleton
-    @Named("pokemon")
-    internal fun providePokemonRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl(BuildConfig.POKEAPI_API_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-
-    }
 
     @Provides
     @Singleton
