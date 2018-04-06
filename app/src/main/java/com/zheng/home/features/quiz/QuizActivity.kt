@@ -28,7 +28,7 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
     private var quizPair: Pair<Int, Quiz>? = null
     private var dialog: AlertDialog.Builder? = null
     private var alertDialog: AlertDialog? = null
-    private var userClickPosition: Int = -1
+    private var userClickPosition: Int = -2
     private var isShowing: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +52,11 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
             isShowing = savedInstanceState.getBoolean(DIALOG_SHOW)
             userClickPosition = savedInstanceState.getInt(USERCLICK_POSITION)
             showQuiz(quiz, answer)
-            if (userClickPosition != -1 && isShowing) {
-                clickItem(userClickPosition)
+            if (userClickPosition != -2 && isShowing) {
+                if (userClickPosition == -1)
+                    showTimeOut()
+                else
+                    clickItem(userClickPosition)
             }
         } else {
             quizPresenter.getQuize()
@@ -137,6 +140,7 @@ class QuizActivity : BaseActivity(), QuizMvpView, ErrorView.ErrorListener, QuizA
     }
 
     override fun showTimeOut() {
+        userClickPosition = -1
         if (isShowing && alertDialog != null) {
             alertDialog?.dismiss()
         }
