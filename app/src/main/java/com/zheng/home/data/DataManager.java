@@ -23,7 +23,6 @@ import io.reactivex.Single;
 
 @Singleton
 public class DataManager {
-
     private PokemonApi pokemonService;
     private QuizApi quizApi;
 

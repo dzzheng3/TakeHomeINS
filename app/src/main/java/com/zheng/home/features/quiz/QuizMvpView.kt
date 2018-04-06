@@ -11,4 +11,7 @@ interface QuizMvpView : MvpView {
 
     fun showError(error: Throwable)
 
+    fun countDown(time: Long)
+
+    fun showTimeOut()
 }
