@@ -19,7 +19,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Singleton
@@ -47,7 +46,7 @@ public class DataManager {
         return pokemonService.getPokemon(name);
     }
 
-    public Observable<String> getResponse() {
+    public Single<String> getResponse() {
         return quizApi.getQuizItemList();
     }
 
@@ -57,7 +56,7 @@ public class DataManager {
         return quizList.get(i);
     }
 
-    public int getQuizAnswer(Quiz quiz){
+    public int getQuizAnswer(Quiz quiz) {
         List<String> answers = quiz.getImages();
         String correctAnswer = answers.get(0);
         Collections.shuffle(answers);
