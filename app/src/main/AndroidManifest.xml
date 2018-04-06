@@ -42,7 +42,7 @@
             android:name=".features.detail.MapsSampleActivity"
             android:label="@string/title_activity_maps_sample" />
         <activity
-            android:name=".features.main.WelcomeActivity"
+            android:name=".features.splash.WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

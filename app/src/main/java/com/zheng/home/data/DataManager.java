@@ -1,6 +1,5 @@
 package com.zheng.home.data;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,6 +19,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Singleton
@@ -47,7 +47,7 @@ public class DataManager {
         return pokemonService.getPokemon(name);
     }
 
-    public Single<String> getResponse() {
+    public Observable<String> getResponse() {
         return quizApi.getQuizItemList();
     }
 

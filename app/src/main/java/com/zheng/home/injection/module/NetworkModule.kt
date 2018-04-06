@@ -17,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
@@ -45,11 +46,11 @@ class NetworkModule(private val context: Context) {
     @Provides
     @Singleton
     @Named("quiz")
-    internal fun provideQuizRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    internal fun provideQuizRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(BuildConfig.POKEAPI_API_URL)
+                .baseUrl(BuildConfig.QUIZ_API_URL)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
 

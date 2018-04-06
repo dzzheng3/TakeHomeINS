@@ -2,11 +2,12 @@ package com.zheng.home.injection.component
 
 import android.app.Application
 import android.content.Context
-import dagger.Component
 import com.zheng.home.data.DataManager
 import com.zheng.home.data.remote.PokemonApi
+import com.zheng.home.data.remote.QuizApi
 import com.zheng.home.injection.ApplicationContext
 import com.zheng.home.injection.module.AppModule
+import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
@@ -21,4 +22,5 @@ interface AppComponent {
     fun dataManager(): DataManager
 
     fun pokemonApi(): PokemonApi
+    fun quizApi(): QuizApi
 }
