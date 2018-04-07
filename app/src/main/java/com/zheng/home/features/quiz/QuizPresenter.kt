@@ -22,13 +22,11 @@ constructor(private val mDataManager: DataManager) : BasePresenter<QuizMvpView>(
             disposable?.dispose()
         mvpView?.showProgress(true)
         mDataManager.response
-                .compose(SchedulerUtils.ioToMain<String>())
-                .subscribe({ json ->
+                .compose(SchedulerUtils.ioToMain<Pair<Int, Quiz>>())
+                .subscribe({ pair ->
                     countDown()
                     mvpView?.showProgress(false)
-                    var quiz: Quiz = mDataManager.getRandomQuiz(mDataManager.getQuizList(json))
-                    var currentAnswer: Int = mDataManager.getQuizAnswer(quiz)
-                    mvpView?.showQuiz(quiz, currentAnswer)
+                    mvpView?.showQuiz(pair.second, pair.first)
                 }) { throwable ->
                     mvpView?.showProgress(false)
                     mvpView?.showError(throwable)

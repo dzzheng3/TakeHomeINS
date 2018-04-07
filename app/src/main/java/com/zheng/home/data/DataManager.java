@@ -1,5 +1,6 @@
 package com.zheng.home.data;
 
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,9 +19,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Single;
+import kotlin.Pair;
 
 @Singleton
-public class DataManager{
+public class DataManager {
     private QuizApi quizApi;
 
     @Inject
@@ -28,9 +30,20 @@ public class DataManager{
         this.quizApi = quizApi;
     }
 
-    public Single<String> getResponse() {
-        return quizApi.getQuizItemList();
+    public Single<Pair<Integer, Quiz>> getResponse() {
+        return quizApi.getQuizItemList()
+                .toObservable()
+                .flatMapIterable(json ->
+                        getQuizList(json))
+                .toList().map(quizList -> {
+                    Random random = new Random();
+                    int i = random.nextInt(quizList.size());
+                    Quiz quiz = quizList.get(i);
+                    return new Pair<Integer, Quiz>(getQuizAnswer(quiz), quiz);
+                })
+                ;
     }
+
 
     public Quiz getRandomQuiz(List<Quiz> quizList) {
         Random random = new Random();
