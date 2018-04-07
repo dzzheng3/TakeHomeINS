@@ -35,7 +35,7 @@ constructor(private val mDataManager: DataManager) : BasePresenter<QuizMvpView>(
                 }
     }
 
-    fun countDown() {
+    private fun countDown() {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .take(30) // up to 30 items
                 .map({ v -> v + 1 }) // shift it to 1 .. 30

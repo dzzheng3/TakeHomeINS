@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.zheng.home.common.TestComponentRule
+import com.zheng.home.data.remote.QuizApi
 import com.zheng.home.features.quiz.QuizActivity
 import com.zheng.home.util.ErrorTestUtil
 import com.zheng.home.util.TestUtils
@@ -13,6 +14,7 @@ import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.Mockito.`when`
 
 @RunWith(AndroidJUnit4::class)
@@ -20,7 +22,8 @@ class QuizActivityTest {
 
     private val mComponent = TestComponentRule(InstrumentationRegistry.getTargetContext())
     private val rule = ActivityTestRule(QuizActivity::class.java, false, false)
-
+    @Mock
+    lateinit var quizApi: QuizApi
     // TestComponentRule needs to go first to make sure the Dagger ApplicationTestComponent is set
     // in the Application before any Activity is launched.
     @Rule
@@ -30,13 +33,15 @@ class QuizActivityTest {
     @Test
     fun checkPokemonsDisplay() {
         var testUtils = TestUtils()
-        var dataManagerTest: DataManagerTest
-        var loadJson = testUtils.loadJson("mock/quiz.json")
+        `when`(quizApi.getQuizItemList())
+                .thenReturn(Single.just(testUtils.loadJson("mock/quiz.json")))
 
-        stubDataManagerGetResponse(Single.just(loadJson))
-        rule.launchActivity(null)
-
-//        onView(withText(ArgumentMatchers.anyString()))
+//        var loadJson = testUtils.loadJson("mock/quiz.json")
+//
+//        stubDataManagerGetResponse(Single.just(loadJson))
+//        rule.launchActivity(null)
+//
+//        onView(withId(R.id.tv_name))
 //                .check(matches(isDisplayed()))
     }
 

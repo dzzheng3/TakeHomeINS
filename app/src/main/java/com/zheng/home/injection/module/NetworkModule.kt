@@ -18,7 +18,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import timber.log.Timber
-import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -31,7 +30,6 @@ class NetworkModule(private val context: Context) {
 
     @Provides
     @Singleton
-    @Named("quiz")
     internal fun provideQuizRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(BuildConfig.QUIZ_API_URL)

@@ -2,10 +2,11 @@ package com.zheng.home.common.injection.module
 
 import android.app.Application
 import android.content.Context
+import com.zheng.home.data.DataManager
+import com.zheng.home.data.remote.QuizApi
+import com.zheng.home.injection.ApplicationContext
 import dagger.Module
 import dagger.Provides
-import com.zheng.home.data.DataManager
-import com.zheng.home.injection.ApplicationContext
 import org.mockito.Mockito.mock
 import javax.inject.Singleton
 
@@ -40,8 +41,8 @@ class ApplicationTestModule(private val mApplication: Application) {
 
     @Provides
     @Singleton
-    internal fun provideMvpBoilerplateService(): PokemonApi {
-        return mock(PokemonApi::class.java)
+    internal fun provideService(): QuizApi {
+        return mock(QuizApi::class.java)
     }
 
 }

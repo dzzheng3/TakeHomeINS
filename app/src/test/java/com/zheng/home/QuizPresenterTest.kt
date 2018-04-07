@@ -18,11 +18,13 @@ import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class MainPresenterTest {
+class QuizPresenterTest {
 
     @Mock
+    private
     lateinit var quizMvpView: QuizMvpView
     @Mock
+    private
     lateinit var mMockDataManager: DataManager
     private var quizPresenter: QuizPresenter? = null
 
@@ -43,14 +45,13 @@ class MainPresenterTest {
 
     @Test
     @Throws(Exception::class)
-    fun getPokemonReturnsPokemonNames() {
+    fun getQuize() {
         val testUtils = TestUtils()
         val loadJson = testUtils.loadJson("mock/quiz.json")
         `when`(mMockDataManager.response)
                 .thenReturn(Single.just(loadJson))
 
         quizPresenter?.getQuize()
-
         verify<QuizMvpView>(quizMvpView, times(2)).showProgress(anyBoolean())
         verify<QuizMvpView>(quizMvpView).showQuiz(Quiz("", listOf()), 1)
         verify<QuizMvpView>(quizMvpView, never()).showError(RuntimeException())
@@ -62,15 +63,12 @@ class MainPresenterTest {
 
     @Test
     @Throws(Exception::class)
-    fun getPokemonReturnsError() {
+    fun getQuizeError() {
         `when`(mMockDataManager.response)
                 .thenReturn(Single.error<String>(RuntimeException()))
 
         quizPresenter?.getQuize()
-
         verify<QuizMvpView>(quizMvpView, times(2)).showProgress(anyBoolean())
-//        verify<MainMvpView>(quizMvpView).showError(RuntimeException())
         verify<QuizMvpView>(quizMvpView, never()).showQuiz(quiz, 1)
     }
-
 }

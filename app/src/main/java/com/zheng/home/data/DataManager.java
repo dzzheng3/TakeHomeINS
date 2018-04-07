@@ -20,7 +20,7 @@ import javax.inject.Singleton;
 import io.reactivex.Single;
 
 @Singleton
-public class DataManager {
+public class DataManager{
     private QuizApi quizApi;
 
     @Inject
